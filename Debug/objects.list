@@ -1,0 +1,6 @@
+"./Src/gpio.o"
+"./Src/led_toggle.o"
+"./Src/stm32g030xx.o"
+"./Src/syscalls.o"
+"./Src/sysmem.o"
+"./Startup/startup_stm32g030f6px.o"
