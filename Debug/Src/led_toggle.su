@@ -1,2 +1,2 @@
 ../Src/led_toggle.c:27:6:delay	16	static
-../Src/led_toggle.c:31:5:main	24	static
+../Src/led_toggle.c:31:5:main	40	static

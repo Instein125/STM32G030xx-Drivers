@@ -42,9 +42,23 @@ int main(void)
 	GPIO_PeriClkCtrl(GPIOB, ENABLE);
 	GPIO_Init(&GpioLed);
 
+	GPIO_Handle_t GpioButton;
+
+	GpioButton.pGPIOx = GPIOA;
+	GpioButton.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_NO_14;
+	GpioButton.GPIO_PinConfig.GPIO_Mode = GPIO_MODE_INPUT;
+	GpioButton.GPIO_PinConfig.GPIO_Speed = GPIO_SPEED_MEDIUM;
+	GpioButton.GPIO_PinConfig.GPIO_OpType = GPIO_OP_TYPE_PP;
+	GpioButton.GPIO_PinConfig.GPIO_PuPdControl = GPIO_NO_PUPD;
+
+	GPIO_PeriClkCtrl(GPIOA, ENABLE);
+	GPIO_Init(&GpioButton);
+
 	while(1){
-		GPIO_ToggleOutputPin(GPIOB, GPIO_PIN_NO_3);
-		delay();
+		if(GPIO_ReadFromInputPin(GPIOA, GPIO_PIN_NO_14)){
+			delay();
+			GPIO_ToggleOutputPin(GPIOB, GPIO_PIN_NO_3);
+		}
 	}
 
 }
