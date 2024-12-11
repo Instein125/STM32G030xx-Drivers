@@ -45,7 +45,7 @@ int main(void)
 	GPIO_Handle_t GpioButton;
 
 	GpioButton.pGPIOx = GPIOA;
-	GpioButton.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_NO_14;
+	GpioButton.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_NO_12;
 	GpioButton.GPIO_PinConfig.GPIO_Mode = GPIO_MODE_INPUT;
 	GpioButton.GPIO_PinConfig.GPIO_Speed = GPIO_SPEED_MEDIUM;
 	GpioButton.GPIO_PinConfig.GPIO_OpType = GPIO_OP_TYPE_PP;
@@ -55,7 +55,7 @@ int main(void)
 	GPIO_Init(&GpioButton);
 
 	while(1){
-		if(GPIO_ReadFromInputPin(GPIOA, GPIO_PIN_NO_14)){
+		if(GPIO_ReadFromInputPin(GPIOA, GPIO_PIN_NO_12)){
 			delay();
 			GPIO_ToggleOutputPin(GPIOB, GPIO_PIN_NO_3);
 		}

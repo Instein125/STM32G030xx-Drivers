@@ -127,7 +127,8 @@ uint16_t GPIO_ReadFromInputPort(GPIO_RegDef_t *pGPIOx);										/*Read from a G
 void GPIO_WriteToOutputPin(GPIO_RegDef_t *pGPIOx, uint8_t pinNum, uint8_t value);			/*Write to a GPIO pin*/
 void GPIO_WriteToOutputPort(GPIO_RegDef_t *pGPIOx, uint16_t value);							/*Write to a GPIO port*/
 void GPIO_ToggleOutputPin(GPIO_RegDef_t *pGPIOx, uint8_t pinNum);							/*Toggle a GPIO Input pin*/
-void GPIO_IRQConfig(uint8_t IRQNum, uint8_t IRQPriority, uint8_t en);						/*GPIO Interrupt configuration*/
+void GPIO_IRQConfig(uint8_t IRQNum, uint8_t en);						/*GPIO Interrupt configuration*/
+void GPIO_IRQPriorityConfig(uint8_t IRQNum, uint8_t IRQPriority);
 void GPIO_IRQHandling(uint8_t pinNum);					/*GPIO Interrupt handling*/
 
 

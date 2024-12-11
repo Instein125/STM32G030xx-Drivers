@@ -1,5 +1,5 @@
 "./Src/gpio.o"
-"./Src/led_toggle.o"
+"./Src/interrupt_example.o"
 "./Src/stm32g030xx.o"
 "./Src/syscalls.o"
 "./Src/sysmem.o"

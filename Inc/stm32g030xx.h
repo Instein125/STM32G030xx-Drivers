@@ -1,14 +1,25 @@
-
-/*
- * Base addresses of Flash, ROM and SRAM memories
- */
-
 #ifndef INC_STM32G030XX_H_
 #define INC_STM32G030XX_H_
 
 #include <stdint.h>
 
 #define __vo volatile
+
+
+/*
+ * ARM Cortex M0+ Processor NVIC Register Addresses
+ */
+#define NVIC_ISER_BASE_ADDR   		(0xE000E100UL) /* Base address for the Interrupt Set-Enable Registers */
+#define NVIC_ICER_BASE_ADDR   		(0xE000E180UL) /* Base address for the Interrupt Clear-Enable Registers */
+#define NVIC_IPR_BASE_ADDR    		(0xE000E400UL) /* Base address for the Interrupt Priority Registers */
+
+#define NVIC_ISER             ((__vo uint32_t *)NVIC_ISER_BASE_ADDR)
+#define NVIC_ICER             ((__vo uint32_t *)NVIC_ICER_BASE_ADDR)
+#define NVIC_IPR              ((__vo uint8_t *)NVIC_IPR_BASE_ADDR)
+
+/*
+ * Base addresses of Flash, ROM and SRAM memories
+ */
 
 #define FLASH_BASEADDR				0x08000000U 	/*Base address for the Flash(Main Memory) Memory */
 #define SRAM_BASEADDR				0x20000000U		/*Base address for the SRAM Memory */
@@ -38,6 +49,7 @@
 #define USB_BASEADDR               	(APBPERIPH_BASEADDR + 0x5C00) /* Base address of USB */
 #define PWR_BASEADDR                (APBPERIPH_BASEADDR + 0x7000) /* Base address of PWR */
 #define TAMP_BASEADDR               (APBPERIPH_BASEADDR + 0xB000) /* Base address of TAMP + Backup Registers */
+#define SYSCFG_BASEADDR             (APBPERIPH_BASEADDR + 0x10000) /* Base address of SYSCFG */
 #define ADC_BASEADDR                (APBPERIPH_BASEADDR + 0x12400) /* Base address of ADC */
 #define TIM1_BASEADDR               (APBPERIPH_BASEADDR + 0x12C00) /* Base address of TIM1 */
 #define SPI1_BASEADDR               (APBPERIPH_BASEADDR + 0x13000) /* Base address of SPI1/I2S1 */
@@ -82,6 +94,9 @@ typedef struct{
 	__vo uint32_t BRR;          /* GPIO port bit reset register         Address offset: 0x28 */
 } GPIO_RegDef_t;
 
+/*
+ * RCC_RegDef_t structure defines the memory layout of the RCC peripheral
+ */
 typedef struct {
     __vo uint32_t CR;            /* Clock control register                      Address offset: 0x00 */
     __vo uint32_t ICSCR;         /* Internal clock sources calibration register Address offset: 0x04 */
@@ -110,7 +125,21 @@ typedef struct {
     __vo uint32_t CSR;           /* Control/status register                     Address offset: 0x60 */
 } RCC_RegDef_t;
 
-
+/*
+ * EXTI_RegDef_t structure defines the structure for EXTI
+ */
+typedef struct {
+    __vo uint32_t RTSR1;       /* Rising Trigger selection register 1    Address offset: 0x00 */
+    __vo uint32_t FTSR1;       /* Falling Trigger selection register 1   Address offset: 0x04 */
+    __vo uint32_t SWIER1;      /* Software interrupt event register 1    Address offset: 0x08 */
+    __vo uint32_t RPR1;        /* Rising edge pending register 1         Address offset: 0x0C */
+    __vo uint32_t FPR1;        /* Falling edge pending register 1        Address offset: 0x10 */
+    uint32_t RESERVED1[19];    /* Reserved                               Address offset: 0x14-0x5C */
+    __vo uint32_t EXTICR[4];   /* External interrupt configuration registers Address offset: 0x60-0x6C */
+    uint32_t RESERVED2[4];     /* Reserved                               Address offset: 0x70-0x7C */
+    __vo uint32_t IMR1;        /* Interrupt mask register 1              Address offset: 0x80 */
+    __vo uint32_t EMR1;        /* Event mask register 1                  Address offset: 0x84 */
+} EXTI_RegDef_t;
 
 /*
  * Peripheral definitions (Peripheral base addresses typecasted to xxx_RegDef_t)
@@ -123,6 +152,7 @@ typedef struct {
 
 #define RCC				((RCC_RegDef_t*) RCC_BASEADDR)
 
+#define EXTI 			((EXTI_RegDef_t*) EXTI_BASEADDR)
 
 /*
  * Clock enable macros for GPIOx peripherals
@@ -187,6 +217,17 @@ typedef struct {
 #define USART2_PCLK_DI()		( RCC->APBENR1 &= ~(1 << 17) )	// Disable clock for USART2
 
 /*
+ * Clock enable macros for SYSCFG peripherals
+ */
+
+#define SYSCFG_PCLK_EN()		( RCC->APBENR2 |= (1 << 0) )		// Enable clock for ADC1
+
+/*
+ * Clock disable macros for SYSCFG peripherals
+ */
+
+#define SYSCFG_PCLK_DI()		( RCC->APBENR2 &= ~(1 << 0) )		// Disable clock for ADC1
+/*
  * Clock enable macros for ADCx peripherals
  */
 
@@ -240,7 +281,22 @@ typedef struct {
 #define GPIOD_REG_RST()    do{ (RCC->IOPRSTR |= (1 << 3)); (RCC->IOPRSTR &= ~(1 << 5)); }while(0)
 #define GPIOF_REG_RST()    do{ (RCC->IOPRSTR |= (1 << 5)); (RCC->IOPRSTR &= ~(1 << 7)); }while(0)
 
+/*
+ *  GPIO port mapping utility function
+ */
+#define GPIO_BASE_TO_PORT_CODE(pGPIOx)  \
+    ((pGPIOx == GPIOA) ? 0x00 : \
+     (pGPIOx == GPIOB) ? 0x01 : \
+     (pGPIOx == GPIOC) ? 0x02 : \
+     (pGPIOx == GPIOD) ? 0x03 : \
+     (pGPIOx == GPIOF) ? 0x05 : 0xFF) // 0xFF for invalid ports
 
+/*
+ * Macors for IRQ(Interrupt Requests) number based on NVIC vector table
+ */
+#define EXTI0_1_IRQn                  5      /* EXTI Line 0 and 1 interrupts */
+#define EXTI2_3_IRQn                  6      /* EXTI Line 2 and 3 interrupts */
+#define EXTI4_15_IRQn                 7      /* EXTI Line 4 to 15 interrupts */
 /*
  * Generic macros
  */
