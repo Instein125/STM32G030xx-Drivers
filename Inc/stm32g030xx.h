@@ -15,7 +15,7 @@
 
 #define NVIC_ISER             ((__vo uint32_t *)NVIC_ISER_BASE_ADDR)
 #define NVIC_ICER             ((__vo uint32_t *)NVIC_ICER_BASE_ADDR)
-#define NVIC_IPR              ((__vo uint8_t *)NVIC_IPR_BASE_ADDR)
+#define NVIC_IPR              ((__vo uint32_t *)NVIC_IPR_BASE_ADDR)
 
 /*
  * Base addresses of Flash, ROM and SRAM memories
@@ -294,9 +294,18 @@ typedef struct {
 /*
  * Macors for IRQ(Interrupt Requests) number based on NVIC vector table
  */
-#define EXTI0_1_IRQn                  5      /* EXTI Line 0 and 1 interrupts */
-#define EXTI2_3_IRQn                  6      /* EXTI Line 2 and 3 interrupts */
-#define EXTI4_15_IRQn                 7      /* EXTI Line 4 to 15 interrupts */
+#define EXTI0_1_IRQn               		5      /* EXTI Line 0 and 1 interrupts */
+#define EXTI2_3_IRQn                  	6      /* EXTI Line 2 and 3 interrupts */
+#define EXTI4_15_IRQn                 	7      /* EXTI Line 4 to 15 interrupts */
+
+/*
+ * Macors for IRQ Priority
+ */
+#define NVIC_IRQ_PRIORITY_0           	0      /* Priroty 0 */
+#define NVIC_IRQ_PRIORITY_1             1      /* Priroty 1 */
+#define NVIC_IRQ_PRIORITY_2             2      /* Priroty 2 */
+#define NVIC_IRQ_PRIORITY_3             3      /* Priroty 3 */
+
 /*
  * Generic macros
  */

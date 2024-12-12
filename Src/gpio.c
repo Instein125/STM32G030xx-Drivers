@@ -17,6 +17,9 @@ void GPIO_Init(GPIO_Handle_t *pGPIOHandle){
 		pGPIOHandle->pGPIOx->MODER |= temp; // Set new mode
 	} else {
 		// Interrupt mode (to be implemented)
+		// Configure the MODER register to input mode for the corresponding pin
+		pGPIOHandle->pGPIOx->MODER &= ~(0x3 << (2 * pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber));
+
 		if(pGPIOHandle->GPIO_PinConfig.GPIO_Mode == GPIO_MODE_INT_FT){
 			//1. Config FTSR
 			EXTI->FTSR1 |= (1 << pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber);
@@ -194,19 +197,16 @@ void GPIO_IRQConfig(uint8_t IRQNum, uint8_t en){
  * @param  IRQPriority: Priority of the interrupt (0 = highest)
  * @retval None
  */
-void GPIO_IRQPriorityConfig(uint8_t IRQNum, uint8_t IRQPriority){
+void GPIO_IRQPriorityConfig(uint8_t IRQNum, uint32_t IRQPriority){
 	// Make sure that the IRQ priority is within the valid range (0-3 for Cortex-M0+)
 	if (IRQPriority < 4) {
 		// Each register covers 4 interrupt priorities (IRQNum 0-3, 4-7, etc.)
 		uint8_t registerIndex = IRQNum / 4;
-		uint8_t shiftAmount = (IRQNum % 4) * 8 + 6; // Shift by 6 to place priority in the last 2 bits
+		uint8_t iprx_section = (IRQNum % 4);
 
-		// Mask for clearing the priority bits and preserving the reserved bits
-		uint32_t mask = ~(0x3 << shiftAmount); // Mask to clear 2 bits of the selected interrupt priority
+		uint8_t shift_amt = (8*iprx_section) + (8-2);
 
-		// Clear the previous priority and set the new priority
-		NVIC_IPR[registerIndex] = (NVIC_IPR[registerIndex] & mask)
-				| (IRQPriority << shiftAmount);
+		*(NVIC_IPR + (registerIndex)) |= IRQPriority << shift_amt;
 	}
 }
 
