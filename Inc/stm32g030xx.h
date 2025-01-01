@@ -95,6 +95,21 @@ typedef struct{
 } GPIO_RegDef_t;
 
 /*
+ * spi_RegDef_t structure defines the memory layout of the SPI peripheral
+ */
+typedef struct {
+    volatile uint32_t CR1;       // SPI control register 1 (SPI_CR1), offset: 0x00
+    volatile uint32_t CR2;       // SPI control register 2 (SPI_CR2), offset: 0x04
+    volatile uint32_t SR;        // SPI status register (SPI_SR), offset: 0x08
+    volatile uint32_t DR;        // SPI data register (SPI_DR), offset: 0x0C
+    volatile uint32_t CRCPR;     // SPI CRC polynomial register (SPI_CRCPR), offset: 0x10
+    volatile uint32_t RXCRCR;    // SPI RX CRC register (SPI_RXCRCR), offset: 0x14
+    volatile uint32_t TXCRCR;    // SPI TX CRC register (SPI_TXCRCR), offset: 0x18
+    volatile uint32_t I2SCFGR;   // SPI_I2S configuration register (SPI_I2SCFGR), offset: 0x1C
+    volatile uint32_t I2SPR;     // SPI_I2S prescaler register (SPI_I2SPR), offset: 0x20
+} SPI_RegDef_t;
+
+/*
  * RCC_RegDef_t structure defines the memory layout of the RCC peripheral
  */
 typedef struct {
@@ -149,6 +164,9 @@ typedef struct {
 #define GPIOC			((GPIO_RegDef_t*) GPIOC_BASEADDR)
 #define GPIOD			((GPIO_RegDef_t*) GPIOD_BASEADDR)
 #define GPIOF			((GPIO_RegDef_t*) GPIOF_BASEADDR)
+
+#define SPI1			((SPI_RegDef_t*) SPI1_BASEADDR)
+#define SPI2			((SPI_RegDef_t*) SPI2_BASEADDR)
 
 #define RCC				((RCC_RegDef_t*) RCC_BASEADDR)
 

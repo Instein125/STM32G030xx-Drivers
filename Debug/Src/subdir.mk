@@ -7,6 +7,7 @@
 C_SRCS += \
 ../Src/gpio.c \
 ../Src/interrupt_example.c \
+../Src/spi.c \
 ../Src/stm32g030xx.c \
 ../Src/syscalls.c \
 ../Src/sysmem.c 
@@ -14,6 +15,7 @@ C_SRCS += \
 OBJS += \
 ./Src/gpio.o \
 ./Src/interrupt_example.o \
+./Src/spi.o \
 ./Src/stm32g030xx.o \
 ./Src/syscalls.o \
 ./Src/sysmem.o 
@@ -21,6 +23,7 @@ OBJS += \
 C_DEPS += \
 ./Src/gpio.d \
 ./Src/interrupt_example.d \
+./Src/spi.d \
 ./Src/stm32g030xx.d \
 ./Src/syscalls.d \
 ./Src/sysmem.d 
@@ -33,7 +36,7 @@ Src/%.o Src/%.su Src/%.cyclo: ../Src/%.c Src/subdir.mk
 clean: clean-Src
 
 clean-Src:
-	-$(RM) ./Src/gpio.cyclo ./Src/gpio.d ./Src/gpio.o ./Src/gpio.su ./Src/interrupt_example.cyclo ./Src/interrupt_example.d ./Src/interrupt_example.o ./Src/interrupt_example.su ./Src/stm32g030xx.cyclo ./Src/stm32g030xx.d ./Src/stm32g030xx.o ./Src/stm32g030xx.su ./Src/syscalls.cyclo ./Src/syscalls.d ./Src/syscalls.o ./Src/syscalls.su ./Src/sysmem.cyclo ./Src/sysmem.d ./Src/sysmem.o ./Src/sysmem.su
+	-$(RM) ./Src/gpio.cyclo ./Src/gpio.d ./Src/gpio.o ./Src/gpio.su ./Src/interrupt_example.cyclo ./Src/interrupt_example.d ./Src/interrupt_example.o ./Src/interrupt_example.su ./Src/spi.cyclo ./Src/spi.d ./Src/spi.o ./Src/spi.su ./Src/stm32g030xx.cyclo ./Src/stm32g030xx.d ./Src/stm32g030xx.o ./Src/stm32g030xx.su ./Src/syscalls.cyclo ./Src/syscalls.d ./Src/syscalls.o ./Src/syscalls.su ./Src/sysmem.cyclo ./Src/sysmem.d ./Src/sysmem.o ./Src/sysmem.su
 
 .PHONY: clean-Src
 
