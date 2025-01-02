@@ -1,2 +1,0 @@
-../Src/interrupt_example.c:9:6:EXTI4_15_IRQHandler	8	static
-../Src/interrupt_example.c:15:5:main	40	static

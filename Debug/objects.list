@@ -1,7 +1,6 @@
 "./Src/gpio.o"
-"./Src/interrupt_example.o"
 "./Src/spi.o"
-"./Src/stm32g030xx.o"
+"./Src/spi_tx_test.o"
 "./Src/syscalls.o"
 "./Src/sysmem.o"
 "./Startup/startup_stm32g030f6px.o"

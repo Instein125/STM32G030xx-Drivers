@@ -292,12 +292,17 @@ typedef struct {
 /*
  * Macros to reset GPIOx peripherals
  */
-// GPIO Reset Macros
-#define GPIOA_REG_RST()    do{ (RCC->IOPRSTR |= (1 << 0)); (RCC->IOPRSTR &= ~(1 << 2)); }while(0)
-#define GPIOB_REG_RST()    do{ (RCC->IOPRSTR |= (1 << 1)); (RCC->IOPRSTR &= ~(1 << 3)); }while(0)
-#define GPIOC_REG_RST()    do{ (RCC->IOPRSTR |= (1 << 2)); (RCC->IOPRSTR &= ~(1 << 4)); }while(0)
-#define GPIOD_REG_RST()    do{ (RCC->IOPRSTR |= (1 << 3)); (RCC->IOPRSTR &= ~(1 << 5)); }while(0)
-#define GPIOF_REG_RST()    do{ (RCC->IOPRSTR |= (1 << 5)); (RCC->IOPRSTR &= ~(1 << 7)); }while(0)
+#define GPIOA_REG_RST()    do{ (RCC->IOPRSTR |= (1 << 0)); (RCC->IOPRSTR &= ~(1 << 0)); }while(0)
+#define GPIOB_REG_RST()    do{ (RCC->IOPRSTR |= (1 << 1)); (RCC->IOPRSTR &= ~(1 << 1)); }while(0)
+#define GPIOC_REG_RST()    do{ (RCC->IOPRSTR |= (1 << 2)); (RCC->IOPRSTR &= ~(1 << 2)); }while(0)
+#define GPIOD_REG_RST()    do{ (RCC->IOPRSTR |= (1 << 3)); (RCC->IOPRSTR &= ~(1 << 3)); }while(0)
+#define GPIOF_REG_RST()    do{ (RCC->IOPRSTR |= (1 << 5)); (RCC->IOPRSTR &= ~(1 << 5)); }while(0)
+
+/*
+ * Macros to reset SPIx peripherals
+ */
+#define SPI1_REG_RESET()   do { RCC->APBRSTR2 |= (1 << 12); RCC->APBRSTR2 &= ~(1 << 12); } while(0)
+#define SPI2_REG_RESET()   do { RCC->APBRSTR1 |= (1 << 14); RCC->APBRSTR1 &= ~(1 << 14); } while(0)
 
 /*
  *  GPIO port mapping utility function
@@ -325,6 +330,71 @@ typedef struct {
 #define NVIC_IRQ_PRIORITY_3             3      /* Priroty 3 */
 
 /*
+ * Bit position definitions of SPI peripheral
+ */
+
+/****************************** SPI_CR1 Register Bit Definitions ******************************/
+#define SPI_CR1_CPHA        0   // Clock Phase
+#define SPI_CR1_CPOL        1   // Clock Polarity
+#define SPI_CR1_MSTR        2   // Master Selection
+#define SPI_CR1_BR_Pos      3   // Baud Rate Control (BR[2:0])
+#define SPI_CR1_SPE         6   // SPI Enable
+#define SPI_CR1_LSBFIRST    7   // Frame Format (LSB First)
+#define SPI_CR1_SSI         8   // Internal Slave Select
+#define SPI_CR1_SSM         9   // Software Slave Management
+#define SPI_CR1_RXONLY      10  // Receive Only
+#define SPI_CR1_DFF         11  // Data Frame Format (for legacy 8/16-bit frame size, used in older MCUs)
+#define SPI_CR1_CRCNEXT     12  // Transmit CRC Next
+#define SPI_CR1_CRCEN       13  // Hardware CRC Enable
+#define SPI_CR1_BIDIOE      14  // Output Enable in Bidirectional Mode
+#define SPI_CR1_BIDIMODE    15  // Bidirectional Data Mode Enable
+
+/****************************** SPI_CR2 Register Bit Definitions ******************************/
+#define SPI_CR2_RXDMAEN     0   // Rx Buffer DMA Enable
+#define SPI_CR2_TXDMAEN     1   // Tx Buffer DMA Enable
+#define SPI_CR2_SSOE        2   // SS Output Enable
+#define SPI_CR2_NSSP        3   // NSS Pulse Management
+#define SPI_CR2_FRF         4   // Frame Format (TI Mode vs Motorola Mode)
+#define SPI_CR2_ERRIE       5   // Error Interrupt Enable
+#define SPI_CR2_RXNEIE      6   // RX Buffer Not Empty Interrupt Enable
+#define SPI_CR2_TXEIE       7   // TX Buffer Empty Interrupt Enable
+#define SPI_CR2_DS_Pos      8   // Data Size (DS[3:0])
+#define SPI_CR2_FRXTH       12  // FIFO Reception Threshold
+#define SPI_CR2_LDMA_RX     13  // Last DMA Transfer for Reception
+#define SPI_CR2_LDMA_TX     14  // Last DMA Transfer for Transmission
+
+/****************************** SPI_SR Register Bit Definitions ******************************/
+#define SPI_SR_RXNE         0   // Receive Buffer Not Empty
+#define SPI_SR_TXE          1   // Transmit Buffer Empty
+#define SPI_SR_CHSIDE       2   // Channel Side
+#define SPI_SR_UDR          3   // Underrun Flag
+#define SPI_SR_CRCERR       4   // CRC Error Flag
+#define SPI_SR_MODF         5   // Mode Fault
+#define SPI_SR_OVR          6   // Overrun Flag
+#define SPI_SR_BSY          7   // Busy Flag
+#define SPI_SR_FRE          8   // Frame Format Error
+#define SPI_SR_FRLVL_Pos    9   // FIFO Reception Level (FRLVL[1:0])
+#define SPI_SR_FTLVL_Pos    11  // FIFO Transmission Level (FTLVL[1:0])
+
+/****************************** SPI_DR Register Bit Definitions ******************************/
+#define SPI_DR_DR_Pos       0   // Data Register (DR[15:0])
+
+/****************************** SPI_I2SCFGR Register Bit Definitions ******************************/
+#define SPI_I2SCFGR_CHLEN   0   // Channel Length
+#define SPI_I2SCFGR_DATLEN  1   // Data Length (DATLEN[1:0])
+#define SPI_I2SCFGR_CKPOL   3   // Clock Polarity
+#define SPI_I2SCFGR_I2SSTD  4   // I2S Standard Selection (I2SSTD[1:0])
+#define SPI_I2SCFGR_PCMSYNC 7   // PCM Frame Sync
+#define SPI_I2SCFGR_I2SCFG  8   // I2S Configuration Mode (I2SCFG[1:0])
+#define SPI_I2SCFGR_I2SE    10  // I2S Enable
+#define SPI_I2SCFGR_I2SMOD  11  // I2S Mode Selection
+
+/****************************** SPI_I2SPR Register Bit Definitions ******************************/
+#define SPI_I2SPR_I2SDIV    0   // I2S Linear Prescaler (I2SDIV[7:0])
+#define SPI_I2SPR_ODD       8   // Odd Factor for the Prescaler
+#define SPI_I2SPR_MCKOE     9   // Master Clock Output Enable
+
+/*
  * Generic macros
  */
 #define ENABLE 				1
@@ -333,8 +403,12 @@ typedef struct {
 #define RST 				DISABLE
 #define GPIO_PIN_SET		SET
 #define GPIO_PIN_RST 		RST
+#define FLAG_SET			SET
+#define FLAG_RESET			RST
+
 
 #include "gpio.h"
+#include "spi.h"
 
 
 #endif /* INC_STM32G030XX_H_ */

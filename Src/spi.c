@@ -13,7 +13,48 @@
  * @retval None
  */
 void SPI_Init(SPI_Handle_t *pSPIHandle){
+	// congifure the SPI_CR1 register
+	uint32_t tempreg = 0;
 
+	// 1. configure the device mode
+	tempreg |= pSPIHandle->SPI_Config.SPI_Mode << 2;
+
+	// 2. Configure the bus config
+	if (pSPIHandle->SPI_Config.SPI_BusConfig == SPI_BUS_CONFIG_FD) {
+		// Full-Duplex mode (default), BIDIMODE = 0
+		tempreg &= ~(1 << SPI_CR1_BIDIMODE);
+	} else if (pSPIHandle->SPI_Config.SPI_BusConfig == SPI_BUS_CONFIG_HD) {
+		// Half-Duplex mode, BIDIMODE = 1
+		tempreg |= (1 << SPI_CR1_BIDIMODE);
+	} else if (pSPIHandle->SPI_Config.SPI_BusConfig == SPI_BUS_CONFIG_SIMPLEX_RXONLY) {
+		// Simplex mode (Receive only), BIDIMODE = 0, RXONLY = 1
+		tempreg &= ~(1 << SPI_CR1_BIDIMODE);
+		tempreg |= (1 << SPI_CR1_RXONLY);
+	}
+
+	// 3. Configure the SPI clock speed (Baud Rate)
+	tempreg |= pSPIHandle->SPI_Config.SPI_SclkSpeed << SPI_CR1_BR_Pos;
+
+	// 4. Configure the SPI Clock Phase (CPHA)
+	tempreg |= pSPIHandle->SPI_Config.SPI_CPHA << SPI_CR1_CPHA;
+
+	// 5. Configure the SPI Clock Polarity (CPOL)
+	tempreg |= pSPIHandle->SPI_Config.SPI_CPOL << SPI_CR1_CPOL;
+
+	// 6. Configure the SPI Software Slave Management (SSM)
+	tempreg |= pSPIHandle->SPI_Config.SPI_SSM << SPI_CR1_SSM;
+
+	// Write to SPI_CR1 register
+	pSPIHandle->pSPIx->CR1 = tempreg;
+
+	// configure the SPI_CR2 register
+	tempreg = 0;
+
+	// 1. Configure the Data Frame Size (DS[3:0] in CR2)
+	tempreg |= (pSPIHandle->SPI_Config.SPI_DSF << SPI_CR2_DS_Pos);
+
+	// Write to SPI_CR2 register
+	pSPIHandle->pSPIx->CR2 = tempreg;
 }
 
 /**
@@ -22,7 +63,9 @@ void SPI_Init(SPI_Handle_t *pSPIHandle){
  * @retval None
  */
 void SPI_DeInit(SPI_RegDef_t *pSPIx){
-
+	if (pSPIx == SPI1)
+		SPI1_REG_RESET();
+	else if(pSPIx == SPI2) SPI2_REG_RESET();
 }
 
 /**
@@ -41,15 +84,43 @@ void SPI_PeriClkCtrl(SPI_RegDef_t *pSPIx, uint8_t en){
 	}
 }
 
+uint8_t SPI_GetFlagStatus(SPI_RegDef_t *pSPIx, uint32_t FlagName){
+	if(pSPIx->SR & FlagName){
+		return FLAG_SET;
+	} else {
+		return FLAG_RESET;
+	}
+}
+
 /**
  * @brief  Send the data
  * @param  pSPIx: Base address of the SPI peripheral.
  * @param  pTxBuffer: Buffer containing the data to be transmitted
  * @param  Len: Size of the data to be transmitted
  * @retval None
+ *
+ * @note  This is blocking call
  */
 void SPI_SendData(SPI_RegDef_t *pSPIx, uint8_t *pTxBuffer, uint32_t Len){
+	while (Len > 0){
+		// 1. Wait until TXE is set
+		while(SPI_GetFlagStatus(pSPIx, SPI_TXE_FLAG) == FLAG_RESET);
 
+		// 2. check the DFS bit in CR2
+		if (((pSPIx->CR2 & (0xF << SPI_CR2_DS_Pos)) >> SPI_CR2_DS_Pos) == SPI_DSF_16Bits){
+			// 16 bit DFS
+			// 1. Load 16 bits of data into the DR register
+			pSPIx->DR = *((uint16_t*)pTxBuffer);
+			Len -= 2; // Reduce length by 2 bytes
+			(uint16_t*)pTxBuffer++; // increment the buffer by 2 bytes(done by uibt16_t typecast)
+		} else if ((((pSPIx->CR2 & (0xF << SPI_CR2_DS_Pos)) >> SPI_CR2_DS_Pos) == SPI_DSF_8BITS)) {
+			// 8 bit DFS
+			// 1. Load 8 bits of data into the DR register
+			pSPIx->DR = *pTxBuffer;
+			Len--;
+		}
+
+	}
 }
 
 /**

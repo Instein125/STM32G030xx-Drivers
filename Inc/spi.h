@@ -66,18 +66,7 @@ typedef struct {
  * @SPI_DFF Macros
  * Represent the data format supported for communication
  */
-#define SPI_DSF_4BITS						3 /* 4 bit data size */
-#define SPI_DSF_5BITS						4 /* 5 bit data size */
-#define SPI_DSF_6BITS						5 /* 6 bit data size */
-#define SPI_DSF_7BITS						6 /* 7 bit data size */
 #define SPI_DSF_8BITS						7 /* 8 bit data size */
-#define SPI_DSF_9BITS						8 /* 9 bit data size */
-#define SPI_DSF_10BITS						9 /* 10 bit data size */
-#define SPI_DSF_11BITS						10 /* 11 bit data size */
-#define SPI_DSF_12BITS						11 /* 12 bit data size */
-#define SPI_DSF_13BITS						12 /* 13 bit data size */
-#define SPI_DSF_14BITS						13 /* 14 bit data size */
-#define SPI_DSF_15BITS						14 /* 15 bit data size */
 #define SPI_DSF_16Bits						15 /* 16 bit data size */
 
 /*
@@ -107,6 +96,18 @@ typedef struct {
  */
 #define SPI_SSM_DI					0 /* Software slave management disable*/
 #define SPI_SSM_EN					1 /* Software slave management enable*/
+
+/*
+ * SPI related status flags definitions
+ */
+#define SPI_TXE_FLAG       (1 << SPI_SR_TXE)   // Transmit buffer empty flag
+#define SPI_RXNE_FLAG      (1 << SPI_SR_RXNE)  // Receive buffer not empty flag
+#define SPI_BSY_FLAG       (1 << SPI_SR_BSY)   // Busy flag
+#define SPI_OVR_FLAG       (1 << SPI_SR_OVR)   // Overrun flag
+#define SPI_MODF_FLAG      (1 << SPI_SR_MODF)  // Mode fault flag
+#define SPI_CRCERR_FLAG    (1 << SPI_SR_CRCERR) // CRC error flag
+#define SPI_FRE_FLAG       (1 << SPI_SR_FRE)   // Frame format error flag
+#define SPI_TIFRFE_FLAG    (1 << SPI_SR_TIFRFE) // TI frame format error flag
 
 /*
  * APIs supported by the SPI driver

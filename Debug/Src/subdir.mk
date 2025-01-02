@@ -6,25 +6,22 @@
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
 ../Src/gpio.c \
-../Src/interrupt_example.c \
 ../Src/spi.c \
-../Src/stm32g030xx.c \
+../Src/spi_tx_test.c \
 ../Src/syscalls.c \
 ../Src/sysmem.c 
 
 OBJS += \
 ./Src/gpio.o \
-./Src/interrupt_example.o \
 ./Src/spi.o \
-./Src/stm32g030xx.o \
+./Src/spi_tx_test.o \
 ./Src/syscalls.o \
 ./Src/sysmem.o 
 
 C_DEPS += \
 ./Src/gpio.d \
-./Src/interrupt_example.d \
 ./Src/spi.d \
-./Src/stm32g030xx.d \
+./Src/spi_tx_test.d \
 ./Src/syscalls.d \
 ./Src/sysmem.d 
 
@@ -36,7 +33,7 @@ Src/%.o Src/%.su Src/%.cyclo: ../Src/%.c Src/subdir.mk
 clean: clean-Src
 
 clean-Src:
-	-$(RM) ./Src/gpio.cyclo ./Src/gpio.d ./Src/gpio.o ./Src/gpio.su ./Src/interrupt_example.cyclo ./Src/interrupt_example.d ./Src/interrupt_example.o ./Src/interrupt_example.su ./Src/spi.cyclo ./Src/spi.d ./Src/spi.o ./Src/spi.su ./Src/stm32g030xx.cyclo ./Src/stm32g030xx.d ./Src/stm32g030xx.o ./Src/stm32g030xx.su ./Src/syscalls.cyclo ./Src/syscalls.d ./Src/syscalls.o ./Src/syscalls.su ./Src/sysmem.cyclo ./Src/sysmem.d ./Src/sysmem.o ./Src/sysmem.su
+	-$(RM) ./Src/gpio.cyclo ./Src/gpio.d ./Src/gpio.o ./Src/gpio.su ./Src/spi.cyclo ./Src/spi.d ./Src/spi.o ./Src/spi.su ./Src/spi_tx_test.cyclo ./Src/spi_tx_test.d ./Src/spi_tx_test.o ./Src/spi_tx_test.su ./Src/syscalls.cyclo ./Src/syscalls.d ./Src/syscalls.o ./Src/syscalls.su ./Src/sysmem.cyclo ./Src/sysmem.d ./Src/sysmem.o ./Src/sysmem.su
 
 .PHONY: clean-Src
 
