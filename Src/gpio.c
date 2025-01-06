@@ -7,6 +7,9 @@
 void GPIO_Init(GPIO_Handle_t *pGPIOHandle){
 	uint32_t temp = 0; // Temporary register variable
 
+	// enable the peripheral clock
+	GPIO_PeriClkCtrl(pGPIOHandle->pGPIOx, ENABLE);
+
 	// Configure GPIO Mode
 	if (pGPIOHandle->GPIO_PinConfig.GPIO_Mode <= GPIO_MODE_ANALOG) {
 		// Non-interrupt mode (Input, Output, Alternate Function, Analog)

@@ -122,7 +122,8 @@ void SPI_Init(SPI_Handle_t *pSPIHandle);													/*Initialize a GPIO pin*/
 void SPI_DeInit(SPI_RegDef_t *pSPIx);													/*Deinitialize a GPIO pin*/
 
 void SPI_PeriClkCtrl(SPI_RegDef_t *pSPIx, uint8_t en);									/*Enable or Disable the GPIO peripheral clock*/
-
+void SPI_PeripheralCtrl(SPI_RegDef_t *pSPIx, uint8_t en);
+void SPI_SSIConfig(SPI_RegDef_t *pSPIx, uint8_t en);
 /*
  * Data send and receive
  * Two mode Blocking(non interrupt mode) and non blocking(interrupt mode)

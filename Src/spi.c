@@ -16,6 +16,9 @@ void SPI_Init(SPI_Handle_t *pSPIHandle){
 	// congifure the SPI_CR1 register
 	uint32_t tempreg = 0;
 
+	//enable the peripheral clock
+	SPI_PeriClkCtrl(pSPIHandle->pSPIx, ENABLE);
+
 	// 1. configure the device mode
 	tempreg |= pSPIHandle->SPI_Config.SPI_Mode << 2;
 
@@ -82,6 +85,22 @@ void SPI_PeriClkCtrl(SPI_RegDef_t *pSPIx, uint8_t en){
 		if(pSPIx == SPI1)	SPI1_PCLK_DI();
 		else if(pSPIx == SPI2) SPI2_PCLK_DI();
 	}
+}
+
+void SPI_PeripheralCtrl(SPI_RegDef_t *pSPIx, uint8_t en){
+	if(en == ENABLE){
+		pSPIx->CR1 |= (1 << SPI_CR1_SPE);
+	} else {
+		pSPIx->CR1 &= ~(1 << SPI_CR1_SPE);
+	}
+}
+
+void SPI_SSIConfig(SPI_RegDef_t *pSPIx, uint8_t en){
+	if(en == ENABLE){
+			pSPIx->CR1 |= (1 << SPI_CR1_SSI);
+		} else {
+			pSPIx->CR1 &= ~(1 << SPI_CR1_SSI);
+		}
 }
 
 uint8_t SPI_GetFlagStatus(SPI_RegDef_t *pSPIx, uint32_t FlagName){
