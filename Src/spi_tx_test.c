@@ -9,16 +9,16 @@
 #include <string.h>
 
 /*
- * pb11 -> SPI2_MOSI
- * pb12 -> SPI2_NSS   (Chip select)
- * pb13 -> SPI2_SCK
- * pb14 ->  SPI2_MISO
+ * PA2 -> SPI1_MOSI
+ * PA4 -> SPI1_NSS   (Chip select)
+ * PA1 -> SPI1_SCK
+ * PA6 ->  SPI1_MISO
  * ALT function mode 0
  */
-void SPI2_GPIOInits(void){
+void SPI1_GPIOInits(void){
 	GPIO_Handle_t SPIPins;
 
-	SPIPins.pGPIOx = GPIOB;
+	SPIPins.pGPIOx = GPIOA;
 	SPIPins.GPIO_PinConfig.GPIO_Mode = GPIO_MODE_AF;
 	SPIPins.GPIO_PinConfig.GPIO_AltFunction = GPIO_AF_0;
 	SPIPins.GPIO_PinConfig.GPIO_OpType = GPIO_OP_TYPE_PP;
@@ -26,29 +26,29 @@ void SPI2_GPIOInits(void){
 	SPIPins.GPIO_PinConfig.GPIO_Speed = GPIO_SPEED_VHIGH;
 
 	// Sclk
-	SPIPins.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_NO_13;
+	SPIPins.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_NO_1;
 	GPIO_Init(&SPIPins);
 
 	// MOSI
-	SPIPins.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_NO_11;
+	SPIPins.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_NO_2;
 	GPIO_Init(&SPIPins);
 
-	// MISO
-	SPIPins.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_NO_14;
-	GPIO_Init(&SPIPins);
-
-	// NSS
-	SPIPins.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_NO_12;
-	GPIO_Init(& SPIPins);
+//	// MISO
+//	SPIPins.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_NO_6;
+//	GPIO_Init(&SPIPins);
+//
+//	// NSS
+//	SPIPins.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_NO_4;
+//	GPIO_Init(& SPIPins);
 }
 
-void SPI2_Inits(void){
+void SPI1_Inits(void){
 	SPI_Handle_t SPI2handle;
 
-	SPI2handle.pSPIx = SPI2;
+	SPI2handle.pSPIx = SPI1;
 	SPI2handle.SPI_Config.SPI_Mode = SPI_MODE_MASTER;
 	SPI2handle.SPI_Config.SPI_BusConfig = SPI_BUS_CONFIG_FD;
-	SPI2handle.SPI_Config.SPI_SclkSpeed = SPI_SCLK_SPEED_DIV2;
+	SPI2handle.SPI_Config.SPI_SclkSpeed = SPI_SCLK_SPEED_DIV4;
 	SPI2handle.SPI_Config.SPI_DSF = SPI_DSF_8BITS;
 	SPI2handle.SPI_Config.SPI_CPOL = SPI_CPOL_LOW;
 	SPI2handle.SPI_Config.SPI_CPHA = SPI_CPHA_LOW;
@@ -62,22 +62,23 @@ int main()
 {
 	char user_data[] = "Hello world";
 
-	// initialize the GPIO pins to behave as SPI2 pins
-	SPI2_GPIOInits();
+	// initialize the GPIO pins to behave as SPI1 pins
+	SPI1_GPIOInits();
 
-	// initialize the SPI2 peripheral params
-	SPI2_Inits();
+	// initialize the SPI1 peripheral params
+	SPI1_Inits();
 
 	// makes NSS signal internally high and avoids MODF error
-	SPI_SSIConfig(SPI2, ENABLE);
+	SPI_SSIConfig(SPI1, ENABLE);
 
 	//enable the SPI2 peripheral
-	SPI_PeripheralCtrl(SPI2, ENABLE);
+	SPI_PeripheralCtrl(SPI1, ENABLE);
 
-	SPI_SendData(SPI2, (uint8_t*)user_data, strlen(user_data));
+	SPI_SendData(SPI1, (uint8_t*)user_data, strlen(user_data));
 
-	//Disable the SPI2 peripheral
-	SPI_PeripheralCtrl(SPI2, DISABLE);
+	//Disable the SPI1 peripheral
+	SPI_PeripheralCtrl(SPI1, DISABLE);
+	while(1);
 	return 0;
 }
 

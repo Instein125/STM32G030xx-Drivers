@@ -137,6 +137,7 @@ void SPI_SendData(SPI_RegDef_t *pSPIx, uint8_t *pTxBuffer, uint32_t Len){
 			// 1. Load 8 bits of data into the DR register
 			pSPIx->DR = *pTxBuffer;
 			Len--;
+			pTxBuffer++;
 		}
 
 	}

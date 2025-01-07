@@ -5,7 +5,7 @@
 ../Src/spi.c:98:6:SPI_SSIConfig	2
 ../Src/spi.c:106:9:SPI_GetFlagStatus	2
 ../Src/spi.c:123:6:SPI_SendData	5
-../Src/spi.c:152:6:SPI_ReceiveData	1
-../Src/spi.c:162:6:SPI_IRQConfig	2
-../Src/spi.c:177:6:SPI_IRQPriorityConfig	2
-../Src/spi.c:195:6:SPI_IRQHandling	1
+../Src/spi.c:153:6:SPI_ReceiveData	1
+../Src/spi.c:163:6:SPI_IRQConfig	2
+../Src/spi.c:178:6:SPI_IRQPriorityConfig	2
+../Src/spi.c:196:6:SPI_IRQHandling	1
