@@ -1,6 +1,6 @@
 "./Src/gpio.o"
 "./Src/spi.o"
-"./Src/spi_tx_test.o"
+"./Src/spi_tx_arduino_test.o"
 "./Src/syscalls.o"
 "./Src/sysmem.o"
 "./Startup/startup_stm32g030f6px.o"

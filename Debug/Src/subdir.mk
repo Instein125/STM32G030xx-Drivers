@@ -7,21 +7,21 @@
 C_SRCS += \
 ../Src/gpio.c \
 ../Src/spi.c \
-../Src/spi_tx_test.c \
+../Src/spi_tx_arduino_test.c \
 ../Src/syscalls.c \
 ../Src/sysmem.c 
 
 OBJS += \
 ./Src/gpio.o \
 ./Src/spi.o \
-./Src/spi_tx_test.o \
+./Src/spi_tx_arduino_test.o \
 ./Src/syscalls.o \
 ./Src/sysmem.o 
 
 C_DEPS += \
 ./Src/gpio.d \
 ./Src/spi.d \
-./Src/spi_tx_test.d \
+./Src/spi_tx_arduino_test.d \
 ./Src/syscalls.d \
 ./Src/sysmem.d 
 
@@ -33,7 +33,7 @@ Src/%.o Src/%.su Src/%.cyclo: ../Src/%.c Src/subdir.mk
 clean: clean-Src
 
 clean-Src:
-	-$(RM) ./Src/gpio.cyclo ./Src/gpio.d ./Src/gpio.o ./Src/gpio.su ./Src/spi.cyclo ./Src/spi.d ./Src/spi.o ./Src/spi.su ./Src/spi_tx_test.cyclo ./Src/spi_tx_test.d ./Src/spi_tx_test.o ./Src/spi_tx_test.su ./Src/syscalls.cyclo ./Src/syscalls.d ./Src/syscalls.o ./Src/syscalls.su ./Src/sysmem.cyclo ./Src/sysmem.d ./Src/sysmem.o ./Src/sysmem.su
+	-$(RM) ./Src/gpio.cyclo ./Src/gpio.d ./Src/gpio.o ./Src/gpio.su ./Src/spi.cyclo ./Src/spi.d ./Src/spi.o ./Src/spi.su ./Src/spi_tx_arduino_test.cyclo ./Src/spi_tx_arduino_test.d ./Src/spi_tx_arduino_test.o ./Src/spi_tx_arduino_test.su ./Src/syscalls.cyclo ./Src/syscalls.d ./Src/syscalls.o ./Src/syscalls.su ./Src/sysmem.cyclo ./Src/sysmem.d ./Src/sysmem.o ./Src/sysmem.su
 
 .PHONY: clean-Src
 
